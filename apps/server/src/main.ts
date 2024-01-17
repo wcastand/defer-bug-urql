@@ -5,13 +5,16 @@ import { IResolvers } from "@graphql-tools/utils";
 
 const typeDefs = /* GraphQL */ `
 
-  union SearchResult = Book | Author
+  interface Search {
+		name: String!
+	}
 
-  type Book {
-    title: String!
+  type Book implements Search {
+    name: String!
+		title: String!
   }
 
-  type Author {
+  type Author implements Search {
     name: String!
   }
 
@@ -27,7 +30,7 @@ const typeDefs = /* GraphQL */ `
     """
     slowField(waitFor: Int! = 5000): String
 
-    search: SearchResult!
+    search: Search!
   }
 `;
 

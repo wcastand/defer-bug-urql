@@ -4,34 +4,46 @@ import EditScreenInfo from "../../components/EditScreenInfo";
 import { Text, View } from "../../components/Themed";
 import { useQuery } from "urql";
 import { useState } from "react";
-import { graphql } from "../../graphql";
+import { FragmentOf, graphql, readFragment } from "../../graphql";
 
-const QueryDocument = graphql(`
+const BookFragment = graphql(`
+	fragment BookFragment on Book {
+		... on Book @defer {
+			__typename
+			title
+			name
+		}
+	}
+`);
+const QueryDocument = graphql(
+	`
   query Query {
     fastField
     search {
-      __typename
-      ... on Book {
-        title
-      }
-      ... on Author {
-        name
-      }
+      ...BookFragment
     }
   }
-`);
+`,
+	[BookFragment],
+);
+
+function Book(props: { fragment?: FragmentOf<typeof BookFragment> }) {
+	const book = readFragment(BookFragment, props.fragment);
+	return (
+		<View>
+			<Text>Book {book?.name}</Text>
+			<Text>Book {book?.title}</Text>
+		</View>
+	);
+}
 
 function Queryioes() {
 	const [result] = useQuery({ query: QueryDocument });
 
 	return (
 		<View>
-			<Text>
-				{result.data?.search.__typename === "Author"
-					? result.data.search.name
-					: result.data?.search.title}
-			</Text>
 			<Text>{result.data?.fastField ?? "-"}</Text>
+			<Book fragment={result.data?.search} />
 		</View>
 	);
 }

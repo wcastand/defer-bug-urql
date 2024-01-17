@@ -28,8 +28,23 @@ const introspection = {
     "subscriptionType": null,
     "types": [
       {
-        "kind": "UNION",
-        "name": "SearchResult",
+        "kind": "INTERFACE",
+        "name": "Search",
+        "fields": [
+          {
+            "name": "name",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": [],
         "possibleTypes": [
           {
             "kind": "OBJECT",
@@ -42,9 +57,25 @@ const introspection = {
         ]
       },
       {
+        "kind": "SCALAR",
+        "name": "String"
+      },
+      {
         "kind": "OBJECT",
         "name": "Book",
         "fields": [
+          {
+            "name": "name",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
           {
             "name": "title",
             "type": {
@@ -58,11 +89,12 @@ const introspection = {
             "args": []
           }
         ],
-        "interfaces": []
-      },
-      {
-        "kind": "SCALAR",
-        "name": "String"
+        "interfaces": [
+          {
+            "kind": "INTERFACE",
+            "name": "Search"
+          }
+        ]
       },
       {
         "kind": "OBJECT",
@@ -81,7 +113,12 @@ const introspection = {
             "args": []
           }
         ],
-        "interfaces": []
+        "interfaces": [
+          {
+            "kind": "INTERFACE",
+            "name": "Search"
+          }
+        ]
       },
       {
         "kind": "OBJECT",
@@ -125,8 +162,8 @@ const introspection = {
             "type": {
               "kind": "NON_NULL",
               "ofType": {
-                "kind": "UNION",
-                "name": "SearchResult",
+                "kind": "INTERFACE",
+                "name": "Search",
                 "ofType": null
               }
             },
